@@ -17,7 +17,7 @@ const welcomeMessage = `Welcome!👋 I am LoTerra Bot your personal assistant.
 
 Here you can get some info about LoTerra ecosystem. Click and let yourself be guided!
 
-🎰 *LoTerra Lottery Info:*
+*🎰 LoTerra Lottery Info:*
 /currentlotteryinfo@LoTerraBot - Get Current lottery info
 /prizerankpercentage@LoTerraBot - Get prize rank percentage
 /probabilities@LoTerraBot - Get probabilities for a single ticket

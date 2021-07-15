@@ -3,7 +3,7 @@ const numeral = require('numeral');
 
 // Use swagger to query the contract 
 // https://lcd.terra.dev/swagger-ui/#/Wasm/get_wasm_contracts__contractAddress__store
-const lottery_contract_address = `terra1zcf0d95z02u2r923sgupp28mqrdwmt930gn8x5`;
+const lottery_contract_address = `terra14mevcmeqt0n4myggt7c56l5fl0xw2hwa2mhlg0`;
 
 const url = `https://lcd.terra.dev/wasm/contracts/${lottery_contract_address}/store?query_msg=`;
 const getState = async () => {
