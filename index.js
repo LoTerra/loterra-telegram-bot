@@ -23,7 +23,7 @@ Here you can get some info about LoTerra ecosystem. Click and let yourself be gu
 /probabilities@LoTerraBot - Get probabilities for a single ticket
 
 🔐 Staking:
-/stakingbalance@@LoTerraBot - Get total staked
+/stakingbalance@LoTerraBot - Get total staked
 
 🪙 LOTA:
 /lotacurrentprice@LoTerraBot - Get LOTA current price
