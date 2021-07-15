@@ -18,20 +18,19 @@ const welcomeMessage = `Welcome!👋 I am LoTerra Bot your personal assistant.
 Here you can get some info about LoTerra ecosystem. Click and let yourself be guided!
 
 🎰 *LoTerra Lottery Info:*
-/currentlotteryinfo - Get Current lottery info
-/lotteryinfobyid - Get lottery info by ID
-/prizerankpercentage - Get prize rank percentage
-/probabilities - Get probabilities for a single ticket
+/currentlotteryinfo@LoTerraBot - Get Current lottery info
+/prizerankpercentage@LoTerraBot - Get prize rank percentage
+/probabilities@LoTerraBot - Get probabilities for a single ticket
 
 🔐 Staking:
-/stakingbalance - Get total staked
+/stakingbalance@@LoTerraBot - Get total staked
 
 🪙 LOTA:
-/lotacurrentprice - Get LOTA current price
-/tokenomics - Get Tokenomics
+/lotacurrentprice@LoTerraBot - Get LOTA current price
+/tokenomics@LoTerraBot - Get Tokenomics
 
 🧐 Help:
-/help
+/help@LoTerraBot
   
 Website:
   🔗 Website: https://loterra.io
@@ -111,7 +110,7 @@ function remainingTime(timeLeftDraw) {
 };
 
 // Listen commands
-bot.hears('/currentlotteryinfo', async (ctx) => {
+bot.hears('/currentlotteryinfo@LoTerraBot', async (ctx) => {
   try {
     const { admin,
            block_time_play,
@@ -167,7 +166,7 @@ Rank 4 - ${numeral((grossPrizesRank4 * token_holder_percentage_fee_reward) / 100
   }
 });
 
-bot.hears('/prizerankpercentage', async (ctx) => {
+bot.hears('/prizerankpercentage@LoTerraBot', async (ctx) => {
   const { prize_rank_winner_percentage } = await getState()
   const prizePerRank = `*Prize per rank#:*
 Rank#1: ${prize_rank_winner_percentage[0]}％
@@ -178,27 +177,27 @@ Rank#4: ${prize_rank_winner_percentage[3]}％
   ctx.reply(prizePerRank, { parse_mode: "Markdown"})
 });
 
-bot.hears('/probabilities', async (ctx) => {
+bot.hears('/probabilities@LoTerraBot', async (ctx) => {
   ctx.reply(getProbabilities, { parse_mode: "Markdown" })
 });
 
-bot.hears('/stakingbalance', async (ctx) => {
+bot.hears('/stakingbalance@LoTerraBot', async (ctx) => {
   const balance = await getStakingBalance()
   ctx.reply(`*Total staked:* ${balance} $LOTA`, { parse_mode: "Markdown" })
 });
 
 // TODO 
-bot.hears('/stakinginfo', async (ctx) => {
+bot.hears('/stakinginfo@LoTerraBot', async (ctx) => {
   ctx.reply(getProbabilities, { parse_mode: "Markdown" })
 });
 
-bot.hears('/lotacurrentprice', async (ctx) => {
+bot.hears('/lotacurrentprice@LoTerraBot', async (ctx) => {
   const lotaPrice = await getLotaPrice();
   console.log(lotaPrice)
   ctx.reply(`*$LOTA price:* ${lotaPrice}$` ,{ parse_mode: "Markdown" })
 });
 
-bot.hears('/tokenomics', async (ctx) => {
+bot.hears('/tokenomics@LoTerraBot', async (ctx) => {
   ctx.reply(getTokenomics, { parse_mode: "Markdown" })
 });
 
