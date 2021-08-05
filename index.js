@@ -1,7 +1,7 @@
 // How to use numeral? http://numeraljs.com/
 const numeral = require('numeral');
 const { Telegraf } = require('telegraf');
-const { getState, getBalance, getCountTicket, getCountPlayer } = require('./lottery_queries');
+const { getState, getBalance, getCountTicket, getCountPlayer, getLastLotteryInfo } = require('./lottery_queries');
 const { getStakingBalance, getHolder } = require('./staking_queries');
 const { getLotaPrice } = require('./lota_price_queries');
 
@@ -21,6 +21,9 @@ Here you can get some info about LoTerra ecosystem. Click and let yourself be gu
 /currentlotteryinfo@LoTerraBot - Get Current lottery info
 /prizerankpercentage@LoTerraBot - Get prize rank percentage
 /probabilities@LoTerraBot - Get probabilities for a single ticket
+
+🔚 Last draw info:
+/lastlotteryinfo@LoTerraBot - Get last draw info
 
 🔐 Staking:
 /stakingbalance@LoTerraBot - Get total staked
@@ -166,6 +169,45 @@ Rank 4 - ${numeral((grossPrizesRank4 * token_holder_percentage_fee_reward) / 100
   }
 });
 
+bot.hears('/lastlotteryinfo@LoTerraBot', async (ctx) => {
+  try {
+    const { admin,
+            block_time_play,
+            lottery_counter, 
+            token_holder_percentage_fee_reward, 
+            price_per_ticket_to_register, 
+            jackpot_percentage_reward, 
+            prize_rank_winner_percentage}
+    = await getState()
+    const get_Last_Lottery_Info = await getLastLotteryInfo()
+    let lastLotteryID = parseInt(lottery_counter) - 1;
+    const count_players = await getCountPlayer()
+
+
+
+    const getLastLotteryInfoResponse = `*🎰 Last Lottery:*
+
+🆔 ${lastLotteryID} 
+💰 Jackpot ${numeral(get_Last_Lottery_Info[0]).format('0,0.00')} $UST
+🙋‍♂️ ${get_Last_Lottery_Info[1]} players
+🎫 ${get_Last_Lottery_Info[2]} ticket sold
+🏆 ${get_Last_Lottery_Info[7]} winners
+
+🎟 ${get_Last_Lottery_Info[3]} winnings tickets rank#4
+🎟 ${get_Last_Lottery_Info[4]} winnings tickets rank#3
+🎟 ${get_Last_Lottery_Info[5]} winnings tickets rank#2
+🎟 ${get_Last_Lottery_Info[6]} winnings tickets rank#1
+
+🤴 Biggest winner: 🎟  winnings tickets
+
+✅ ${get_Last_Lottery_Info[8]} winning combination  
+`;
+    ctx.reply(getLastLotteryInfoResponse, { parse_mode: "Markdown" })
+  }  catch (e){
+    console.log(e)
+  }
+});
+
 bot.hears('/prizerankpercentage@LoTerraBot', async (ctx) => {
   const { prize_rank_winner_percentage } = await getState()
   const prizePerRank = `*Prize per rank#:*
@@ -194,7 +236,7 @@ bot.hears('/stakinginfo@LoTerraBot', async (ctx) => {
 bot.hears('/lotacurrentprice@LoTerraBot', async (ctx) => {
   const lotaPrice = await getLotaPrice();
   console.log(lotaPrice)
-  ctx.reply(`*$LOTA price:* ${lotaPrice}$` ,{ parse_mode: "Markdown" })
+  ctx.reply(`*$LOTA price:* ${numeral(lotaPrice).format('0,0.000')}$` ,{ parse_mode: "Markdown" })
 });
 
 bot.hears('/tokenomics@LoTerraBot', async (ctx) => {
@@ -206,3 +248,4 @@ bot.launch();
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
+

@@ -25,4 +25,3 @@ function getHolder(address) {
 }
 
 module.exports = { getStakingBalance, getHolder };
-

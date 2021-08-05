@@ -79,4 +79,30 @@ const getCountPlayer = async () => {
   }
 }
 
-module.exports = { getState, getBalance, getCountTicket, getCountPlayer };
+const getLastLotteryInfo = async () => {
+  try{
+    let {lottery_counter} = await getState();
+    let lastLotteryID = parseInt(lottery_counter) - 1;
+
+    let jackpotResponse = await axios.get(`${url}%7B%20%20%20%20%20%22jackpot%22%3A%20%7B%20%20%20%20%20%20%20%20%20%22lottery_id%22%3A%20${lastLotteryID}%20%20%20%20%20%7D%20%7D`);
+    let jackpot = parseInt(jackpotResponse.data.result) / 1000000;
+    
+    let getCountPlayer = await axios.get(`${url}%7B%20%20%09%22count_player%22%3A%20%7B%20%09%09%22lottery_id%22%3A%20${lastLotteryID}%20%09%7D%20%7D`);
+    let getCountTicket = await axios.get(`${url}%7B%20%20%20%20%20%20%22count_ticket%22%3A%20%7B%20%20%20%20%20%20%20%20%20%22lottery_id%22%3A%20${lastLotteryID}%20%20%20%20%20%7D%20%7D`);
+    
+    let getCountWinningTicketsRank4 = await axios.get(`${url}%7B%20%20%20%20%20%22count_winner%22%3A%20%7B%20%20%20%20%20%20%20%20%20%22lottery_id%22%3A%20${lastLotteryID}%2C%20%20%20%20%20%20%20%20%20%22rank%22%3A%204%20%20%20%20%20%7D%20%7D`);
+    let getCountWinningTicketsRank3 = await axios.get(`${url}%7B%20%20%20%20%20%22count_winner%22%3A%20%7B%20%20%20%20%20%20%20%20%20%22lottery_id%22%3A%20${lastLotteryID}%2C%20%20%20%20%20%20%20%20%20%22rank%22%3A%203%20%20%20%20%20%7D%20%7D`);
+    let getCountWinningTicketsRank2 = await axios.get(`${url}%7B%20%20%20%20%20%22count_winner%22%3A%20%7B%20%20%20%20%20%20%20%20%20%22lottery_id%22%3A%20${lastLotteryID}%2C%20%20%20%20%20%20%20%20%20%22rank%22%3A%202%20%20%20%20%20%7D%20%7D`);
+    let getCountWinningTicketsRank1 = await axios.get(`${url}%7B%20%20%20%20%20%22count_winner%22%3A%20%7B%20%20%20%20%20%20%20%20%20%22lottery_id%22%3A%20${lastLotteryID}%2C%20%20%20%20%20%20%20%20%20%22rank%22%3A%201%20%20%20%20%20%7D%20%7D`);
+    
+    let getCountWinners = await axios.get(`${url}%7B%20%20%20%20%20%22winner%22%3A%20%7B%20%20%20%20%20%20%20%20%20%22lottery_id%22%3A%20${lastLotteryID}%20%20%20%20%20%7D%20%7D`)
+    
+    let getWinningCombination = await axios.get(`${url}%7B%20%20%20%20%20%22winning_combination%22%3A%20%7B%20%20%20%20%20%20%20%20%20%22lottery_id%22%3A%20${lastLotteryID}%20%20%20%20%20%7D%20%7D`)
+    let res = [jackpot, getCountPlayer.data.result, getCountTicket.data.result, getCountWinningTicketsRank4.data.result, getCountWinningTicketsRank3.data.result, getCountWinningTicketsRank2.data.result, getCountWinningTicketsRank1.data.result, getCountWinners.data.result.winners.length, getWinningCombination.data.result];
+    return res;
+  }catch (e){
+    console.log(e)
+  }
+}
+
+module.exports = { getState, getBalance, getCountTicket, getCountPlayer, getLastLotteryInfo };
