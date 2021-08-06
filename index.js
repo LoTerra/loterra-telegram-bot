@@ -4,6 +4,7 @@ const { Telegraf } = require('telegraf');
 const { getState, getBalance, getCountTicket, getCountPlayer, getLastLotteryInfo } = require('./lottery_queries');
 const { getStakingBalance, getHolder } = require('./staking_queries');
 const { getLotaPrice } = require('./lota_price_queries');
+const { getCirculatingSupply } = require('./lota_cw20_queries');
 
 // Init bot 
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -54,26 +55,6 @@ Rank#1 (6 hits): 1 / 16^6 = 0.0000059%
 Rank#2 (5 hits): 96 / 16^6 = 0.00057%
 Rank#3 (4 hits): 3840 / 16^6 = 0.023%
 Rank#4 (3 hits): 81920 / 16^6 = 0.49%
-`;
-
-const getTokenomics = `*🪙 Tokenomics:*
-
-*Info:*
-Token type - *CW20*
-Name - *loterra*
-Symbol - *LOTA*
-Decimals - *6*
-Role - *utility*
-Blockchain - *Terra*
-
-*Supply:*
-Circulating supply - 894,548.764705 $LOTA
-Total supply - 1,939,548.764705 $LOTA
-
-*Supply distribution:*
-Community - 603,616.45 $LOTA - 31,12％
-Team - 290,932.314705 $LOTA - 15％
-DAO - 1,045,000 $LOTA - 53.88％
 `;
 
 // Basic commands
@@ -235,11 +216,40 @@ bot.hears('/stakinginfo@LoTerraBot', async (ctx) => {
 
 bot.hears('/lotacurrentprice@LoTerraBot', async (ctx) => {
   const lotaPrice = await getLotaPrice();
-  console.log(lotaPrice)
-  ctx.reply(`*$LOTA price:* ${numeral(lotaPrice).format('0,0.000')}$` ,{ parse_mode: "Markdown" })
+  const circulatingSupply = await getCirculatingSupply();
+  
+  let marketCap = circulatingSupply * lotaPrice
+  
+  const getPrice = `*ℹ️ Price info:*
+*Market Cap:* ${numeral(marketCap).format('0,0.00')}＄
+---
+*$LOTA price:* ${numeral(lotaPrice).format('0,0.000')}＄
+  `;
+  ctx.reply(getPrice,{ parse_mode: "Markdown" })
 });
 
 bot.hears('/tokenomics@LoTerraBot', async (ctx) => {
+  const circulatingSupply = await getCirculatingSupply();
+  const getTokenomics = `*🪙 Tokenomics:*
+
+*Info:*
+Token type - *CW20*
+Name - *loterra*
+Symbol - *LOTA*
+Decimals - *6*
+Role - *utility*
+Blockchain - *Terra*
+
+*Supply:*
+Circulating supply - ${numeral(circulatingSupply).format('0,0.000')} $LOTA
+Total supply - 1,939,548.764705 $LOTA
+
+*Supply distribution:*
+Community - 603,616.45 $LOTA - 31,12％
+Team - 290,932.314705 $LOTA - 15％
+DAO - 1,045,000 $LOTA - 53.88％
+`;
+  
   ctx.reply(getTokenomics, { parse_mode: "Markdown" })
 });
 
