@@ -9,10 +9,14 @@ const getCirculatingSupply = async () => {
   const res = await axios.get(`${url}%7B%20%20%09%22balance%22%3A%20%7B%20%20%09%09%22address%22%3A%20%22terra14mevcmeqt0n4myggt7c56l5fl0xw2hwa2mhlg0%22%20%09%20%7D%20%20%7D`)
   
   let totalSupply = 1939548764705
-  
+  let daoFunds = parseInt(res.data.result.balance) / 1000000
+  let daoHoldingsPercentage = ((res.data.result.balance * 100) / totalSupply)
+  let communityHoldingsPercentage = 100 - 15 - daoHoldingsPercentage
+      
   let circulatingSupply = (totalSupply - parseInt(res.data.result.balance)) / 1000000
-  
-  return circulatingSupply
+  console.log(daoHoldingsPercentage)
+  let data = [circulatingSupply, daoFunds, numeral(daoHoldingsPercentage).format('0,0.00'), numeral(communityHoldingsPercentage).format('0,0.00')]
+  return data
 };
 
 module.exports = { getCirculatingSupply };

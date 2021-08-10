@@ -1,5 +1,4 @@
 // How to use numeral? http://numeraljs.com/
-require('dotenv').config()
 const numeral = require('numeral');
 const { Telegraf } = require('telegraf');
 const { getState, getBalance, getCountTicket, getCountPlayer, getLastLotteryInfo } = require('./lottery_queries');
@@ -231,6 +230,7 @@ bot.hears('/lotacurrentprice@LoTerraBot', async (ctx) => {
 
 bot.hears('/tokenomics@LoTerraBot', async (ctx) => {
   const circulatingSupply = await getCirculatingSupply();
+  
   const getTokenomics = `*🪙 Tokenomics:*
 
 *Info:*
@@ -242,13 +242,13 @@ Role - *utility*
 Blockchain - *Terra*
 
 *Supply:*
-Circulating supply - ${numeral(circulatingSupply).format('0,0.000')} $LOTA
+Circulating supply - ${numeral(circulatingSupply[0]).format('0,0.000')} $LOTA
 Total supply - 1,939,548.764705 $LOTA
 
 *Supply distribution:*
-Community - 603,616.45 $LOTA - 31,12％
+Community - 603,616.45 $LOTA - ${circulatingSupply[3]}%
 Team - 290,932.314705 $LOTA - 15％
-DAO - 1,045,000 $LOTA - 53.88％
+DAO - ${numeral(circulatingSupply[1]).format('0,0.000')} $LOTA - ${circulatingSupply[2]}%
 `;
   
   ctx.reply(getTokenomics, { parse_mode: "Markdown" })
