@@ -166,8 +166,6 @@ bot.hears('/lastlotteryinfo@LoTerraBot', async (ctx) => {
     let lastLotteryID = parseInt(lottery_counter) - 1;
     const count_players = await getCountPlayer()
 
-
-
     const getLastLotteryInfoResponse = `*🎰 Last Lottery:*
 
 🆔 ${lastLotteryID} 
@@ -219,7 +217,6 @@ bot.hears('/stakinginfo@LoTerraBot', async (ctx) => {
 bot.hears('/lotacurrentprice@LoTerraBot', async (ctx) => {
   const lotaPrice = await getLotaPrice();
   const circulatingSupply = await getCirculatingSupply();
-    console.log(ctx.message.chat.title)
 
   let marketCap = circulatingSupply * lotaPrice
   
