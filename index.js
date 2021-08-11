@@ -215,22 +215,24 @@ bot.hears('/stakinginfo@LoTerraBot', async (ctx) => {
 });
 
 bot.hears('/lotacurrentprice@LoTerraBot', async (ctx) => {
+
+  if (ctx.message.chat.title == 'LoTerra') {
+    return ctx.reply("Please join @LoTerraTrading for discussing price speculation")
+  } 
+  
   const lotaPrice = await getLotaPrice();
   const circulatingSupply = await getCirculatingSupply();
 
-  let marketCap = circulatingSupply * lotaPrice
+  let marketCap = parseInt(circulatingSupply) * parseInt(lotaPrice)
   
   const getPrice = `*ℹ️ Price info:*
 *Market Cap:* ${numeral(marketCap).format('0,0.00')}＄
 ---
 *$LOTA price:* ${numeral(lotaPrice).format('0,0.000')}＄
   `;
-  
-  if (ctx.message.chat.title == 'LoTerra') {
-    ctx.reply("Please join @LoTerraTrading for discussing price speculation")
-  } else {
-    ctx.reply(getPrice,{ parse_mode: "Markdown" })
-  }
+   
+  ctx.reply(getPrice,{ parse_mode: "Markdown" })
+
 });
 
 bot.hears('/tokenomics@LoTerraBot', async (ctx) => {
