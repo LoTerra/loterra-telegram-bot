@@ -57,6 +57,7 @@ Rank#3 (4 hits): 3840 / 16^6 = 0.023%
 Rank#4 (3 hits): 81920 / 16^6 = 0.49%
 `;
 
+
 // Basic commands
 bot.start((ctx) => ctx.reply(welcomeMessage));
 bot.help((ctx) => ctx.reply(helpMessage, {parse_mode: "Markdown"}));
@@ -95,6 +96,7 @@ function remainingTime(timeLeftDraw) {
 
 // Listen commands
 bot.hears('/currentlotteryinfo@LoTerraBot', async (ctx) => {
+  
   try {
     const { admin,
            block_time_play,
@@ -217,7 +219,8 @@ bot.hears('/stakinginfo@LoTerraBot', async (ctx) => {
 bot.hears('/lotacurrentprice@LoTerraBot', async (ctx) => {
   const lotaPrice = await getLotaPrice();
   const circulatingSupply = await getCirculatingSupply();
-  
+    console.log(ctx.message.chat.title)
+
   let marketCap = circulatingSupply * lotaPrice
   
   const getPrice = `*ℹ️ Price info:*
@@ -225,7 +228,12 @@ bot.hears('/lotacurrentprice@LoTerraBot', async (ctx) => {
 ---
 *$LOTA price:* ${numeral(lotaPrice).format('0,0.000')}＄
   `;
-  ctx.reply(getPrice,{ parse_mode: "Markdown" })
+  
+  if (ctx.message.chat.title == 'LoTerra') {
+    ctx.reply("Please join @LoTerraTrading for discussing price speculation")
+  } else {
+    ctx.reply(getPrice,{ parse_mode: "Markdown" })
+  }
 });
 
 bot.hears('/tokenomics@LoTerraBot', async (ctx) => {
@@ -259,4 +267,3 @@ bot.launch();
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
-
