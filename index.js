@@ -217,7 +217,7 @@ bot.hears('/stakinginfo@LoTerraBot', async (ctx) => {
 
 bot.hears('/lotacurrentprice@LoTerraBot', async (ctx) => {
 
-  if (ctx.message.chat.title == 'LoTerra') {
+  if (ctx.message.chat.title == 'LoTerra::Official') {
     return ctx.reply("Please join @LoTerraTrading for discussing price speculation")
   } 
   
