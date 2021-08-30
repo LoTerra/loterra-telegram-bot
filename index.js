@@ -223,7 +223,7 @@ bot.hears('/lotacurrentprice@LoTerraBot', async (ctx) => {
   const lotaPrice = await getLotaPrice();
   const circulatingSupply = await getCirculatingSupply();
 
-  let marketCap = parseInt(circulatingSupply) * parseInt(lotaPrice)
+  let marketCap = circulatingSupply[0] * lotaPrice
   
   const getPrice = `*ℹ️ Price info:*
 *Market Cap:* ${numeral(marketCap).format('0,0.00')}＄
@@ -254,7 +254,7 @@ Total supply - 1,939,548.764705 $LOTA
 
 *Supply distribution:*
 Community - 603,616.45 $LOTA - ${circulatingSupply[3]}%
-Team - 290,932.314705 $LOTA - 15％
+Team - 290,932.314705 $LOTA - 15％ 
 DAO - ${numeral(circulatingSupply[1]).format('0,0.000')} $LOTA - ${circulatingSupply[2]}%
 `;
   
