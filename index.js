@@ -1,4 +1,5 @@
 // How to use numeral? http://numeraljs.com/
+require("dotenv").config()
 const numeral = require('numeral');
 const { Telegraf } = require('telegraf');
 const { getState, getBalance, getCountTicket, getCountPlayer, getLastLotteryInfo } = require('./lottery_queries');
@@ -216,7 +217,7 @@ bot.hears('/stakinginfo@LoTerraBot', async (ctx) => {
 
 bot.hears('/lotacurrentprice@LoTerraBot', async (ctx) => {
 
-  if (ctx.message.chat.title == 'LoTerra') {
+  if (ctx.message.chat.title == 'LoTerra::Official') {
     return ctx.reply("Please join @LoTerraTrading for discussing price speculation")
   } 
   
